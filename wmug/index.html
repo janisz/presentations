@@ -38,6 +38,28 @@
 
 				<section>
 					<section>
+						<h2>Idea</h2>
+						<blockquote cite="">
+							Sixty-four cores or 128 cores on a single chip looks a lot like 64 machines or 128 machines in a data center.
+						</blockquote>
+						<p>— Ben Hindman</p>
+					</section>
+
+					<section>
+						<h2>History</h2>
+						<ul>
+							<li>June 2009 — Mesos was first presented (at HotCloud '09)</li>
+							<li>March 2010 — Talk at Twitter</li>
+							<li>July 2013 — Mesos become a top level Apache project</li>
+							<li>April 2015 — Apple announced that Siri is using their own Mesos framework called Jarvis</li>
+							<li>August 2015 — Verizon has selected Mesosphere's DCOS for data center service orchestration</li>
+							<li>September 2015 — Microsoft announced partnership with Mesosphere</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
 						<h2>What is Mesos?</h2>
 					</section>
 
@@ -84,6 +106,15 @@
 							<li>Dominant Resource Fairness</li>
 							<li>Resource isolation (containers)</li>
 						</ul>
+					</section>
+
+					<section>
+						<blockquote cite="https://www.usenix.org/legacy/events/nsdi11/tech/full_papers/Ghodsi.pdf">
+In a nutshell, DRF seeks to maximize the minimum dominant share across all users. For`
+example, if user A runs CPU-heavy tasks and user B runs memory-heavy tasks, DRF
+attempts to equalize user A’s share of CPUs with user B’s share of memory. In the single
+resource case, DRF reduces to max-min fairness for that resource.
+						</blockquote>
 					</section>
 
 					<section>
@@ -169,7 +200,7 @@
 					<section>
 						<h2>Roles</h2>
 						<pre><code data-trim contenteditable>
---roles="dev,stage,prod"
+--roles="dev,test,prod"
 						</code></pre>
 					</section>
 					<section>
