@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jakość Kodu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(//fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(//fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      ul li {
+        line-height: 1.5em;
+      }
+      .remark-slide-content {
+        font-size: 1.8em;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      a {
+        text-decoration: none;
+      }
+      .footnote {
+        font-size: 20px;
+        position: absolute;
+        bottom: 3em;
+        right: 3em;
+      }
+      .important {
+        color: red;
+        display: block;
+        font-size: 1.3em;
+        padding: 2em;
+        text-align: center;
+      }
+      .remark-slide-content.big-code {
+        background-color: black;
+      }
+      .big-code .remark-code-line {
+        font-size: 2.8em;
+      }
+      .watermark
+      {
+        position: absolute;
+        opacity: 0.5;
+        font-size: 11em;
+        z-index: 1000;
+		left: 0;
+		top: 20%;
+		right: 0;
+		bottom: 0;
+		text-align: center;
+		transform: 			rotate(25deg);
+		-moz-transform: 	rotate(25deg);
+		-webkit-transform: 	rotate(25deg);
+      }
+      .fail {
+        color: red;
+	  }
+      .topic {
+        text-align: center;
+        vertical-align: middle;
+      }
+      .img-50 img {
+        width: 50%;
+      }
+      .img-80 img {
+        height: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: topic
+
+# Calculating bus factor from VCS log
+
+.footnote[Author: [Tomasz Janiszewski](https://github.com/janisz) <br/> Supervisor: [Marcin Luckner, Ph. D.](http://www.mini.pw.edu.pl/~lucknerm/)]
+
+---
+
+# Tools
+
+* Code-mat
+* Python (pandas, networkx)
+
+---
+
+background-image: url(PageRank-hi-res.png)
+.footnote[Wikipedia]
+---
+
+# Communication strength
+
+> The algorithm is similiar to the one used for
+logical coupling: calculate the number of shared
+commits between all permutations of authors.
+Based on their total averaged commits, a
+communication strength value is calculated.
+
+> The coupling is calculated as a percentage value based on
+the number of shared commits between coupled entities divided
+by the average number of total commits for the coupled entities.
+
+
+---
+
+background-image: url(github.png)
+
+---
+
+background-image: url(graph.svg)
+
+---
+
+# PageRank
+
+```
+{
+ 'Jakub Dutkowski': 0.20279164471941036,
+ 'Tomasz Janiszewski': 0.19025266181569728,
+ 'wykasz@gmail.com': 0.17540179613158005
+ 'bednarzm': 0.14856330908561874,
+ 'Rafal Wyka': 0.1394178266715636,
+ 'Tomek Janiszewski': 0.058966946997789024,
+ 'tom8ab': 0.0496311682491181,
+ 'janisz': 0.03497464632922283
+}
+```
+
+---
+
+background-image: url(graph_fixed.svg)
+
+
+---
+
+# PageRank
+
+```
+Tomasz Janiszewski  0.276939
+   Jakub Dutkowski  0.239684
+          bednarzm  0.203750
+        Rafal Wyka  0.191740
+            tom8ab  0.087887
+```
+
+---
+
+# Ignored factors
+
+* Lines of Code
+* Commit time
+* Filetypes
+* Files ownership
+* Messages
+
+---
+
+# Results
+
+```
+        bus_factor      authors       ratio
+count   120.000000   120.000000  120.000000
+mean    112.908333   396.066667    0.296755
+std     188.607012   660.543051    0.042482
+min       1.000000     2.000000    0.156863
+25%      39.750000   136.500000    0.275766
+50%      69.500000   230.000000    0.295603
+75%     132.250000   456.250000    0.319437
+max    1865.000000  6339.000000    0.500000
+```
+
+---
+
+# Problems
+
+* Github throttling
+* Commiter/Author problem
+* Commiters with many names
+
+
+    </textarea>
+    <script src="//gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+          ratio: '16:9',
+          navigation: {
+            scroll: true,
+            touch: true,
+            click: false
+          },
+          highlightStyle: 'sunburst'
+        });
+    </script>
+  </body>
+</html>
