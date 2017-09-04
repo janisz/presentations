@@ -7,7 +7,8 @@
 		<title>reveal.js</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -23,9 +24,194 @@
 	</head>
 	<body>
 		<div class="reveal">
+
+			<div class="footer" style="position: absolute; left: 0; bottom: 0; font-size: 25px;">
+           <p><i class="fa fa-twitter" aria-hidden="true"></i>janiszt</p>
+    	</div>
+
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h2>
+						8 perfomance tips for Marathon
+					</h2>
+				</section>
+
+				<section>
+
+					<section>
+						<h2>Tomasz Janiszewski</h2>
+						<h3><i class="fa fa-twitter" aria-hidden="true"></i>janiszt</h3>
+						<h3><i class="fa fa-github" aria-hidden="true"></i>janisz</h3>
+					</section>
+
+					<section data-background-image="img/allegro-logo.svg" data-background-size="contain">
+					</section>
+
+					<section>
+						<ul>
+							<li>xxx active users</li>
+							<li>xxx items</li>
+						  <li>xxx transactions per minute</li>
+						  <li>1 Country (Poland)</li>
+						</ul>
+					</section>
+
+					<section>
+						<ul>
+							<li>xxx tasks</li>
+							<li>xxx applications</li>
+						  <li>xxx agents</li>
+						  <li>2 Datacenters</li>
+						  <li>1 Framework (Marathon)</li>
+						</ul>
+					</section>
+			 </section>
+
+			 <section>
+			 <section>
+				 <blockquote class="twitter-tweet tw-align-center" data-conversation="none" data-lang="pl"><p lang="en" dir="ltr">
+					 <a href="https://twitter.com/leppie">@leppie</a>
+					 <a href="https://twitter.com/tk_riple">@tk_riple</a>
+					 NOOP optimization: the fastest code you can possibly write is no code at all.</p>&mdash; Jonathan C Dickinson (@jcdickinson)
+					 <a href="https://twitter.com/jcdickinson/status/659275350401286144">28 October 2015</a>
+				 </blockquote>
+			 </section>
+
+			 <section>
+				 <blockquote>
+					 NOOP optimization: the fastest operation you can possibly perform is no operation at all.
+				 </blockquote>
+			 </section>
+		 </section>
+
+			 <section>
+				 <section>
+					 <h1>Metrics</h1>
+				</section>
+
+				<section>
+					 <blockquote>
+						 <div>&ldquo;Not everything that can be counted counts,
+							 and not everything that counts can be counted.&rdquo;</div>
+						<div style="float:right;">— Albert Einstein</div>
+					</blockquote>
+				 </section>
+
+				 <section data-background-image="img/flame_before.png" data-background-size="contain">
+				 </section>
+
+				 <section data-background-image="img/flame_after.png" data-background-size="contain">
+				 </section>
+
+			 </section>
+
+				<section>
+					<section>
+						<h1>JVM</h1>
+					</section>
+
+					<section>
+						<h1>GC</h1>
+					</section>
+
+					<section>
+						<h1>Akka</h1>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h1>Zookeepr</h1>
+					</section>
+
+					<section>
+						<pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+422 - Failed to deploy app [/really/important/app] to [prod].
+Caused by: (http status: 422 from https://production).
+RESPONSE: [{
+  "message":"Object is not valid",
+  "details":[{
+    "path":"/",
+    "errors":[
+      "The way we persist data in ZooKeeper would exceed the maximum ZK node
+      size (1024000 bytes). You can adjust this value via --zk_max_node_size,
+      but make sure this value is compatible with your ZooKeeper ensemble!
+      See: http://zookeeper.apache.org/doc/r3.3.1/zookeeperAdmin.html#Unsafe+Options"
+    ]
+  }]
+}]
+						</code></pre>
+					</section>
+					
+					<section>
+						<h3>Size</h3>
+					</section>
+
+					<section>
+						<h3>Writes</h3>
+					</section>
+
+					<section>
+						<h3>Load</h3>
+					</section>
+
+					<section>
+						<h3>Latency</h3>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h1>Threads</h1>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Healthchecks</h1>
+					</section>
+
+					<section>
+						<h1>Healthchecks</h1>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Events</h1>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Deployments</h1>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Plugins</h1>
+					</section>
+				</section>
+
+
+
+
+				<section>
+					<ol>
+						<li>Shard your marathon</li>
+						<li>Monitor — enable metrics</li>
+						<li>Update to 1.3.12*</li>
+						<li>Minimize Zookeeper latency</li>
+						<li>Tune JVM</li>
+						<li>Do not use the event bus</li>
+						<li>Use a custom executor</li>
+						<li>Prefer batch deployments to many individual ones</li>
+					<ol>
+				</section>
+
 			</div>
 		</div>
 
@@ -45,5 +231,6 @@
 				]
 			});
 		</script>
+		<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 	</body>
 </html>
