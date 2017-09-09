@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>MesosCon 2017 | 8 perfomance tips for Marathon</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/white.css">
@@ -25,7 +25,7 @@
 	<body>
 		<div class="reveal">
 
-			<div class="footer" style="position: absolute; left: 0; bottom: 0; font-size: 25px;">
+			<div class="footer" style="position: absolute; left: 0; bottom: 0; font-size: 25px; z-index: 30;">
            <p><i class="fa fa-twitter" aria-hidden="true"></i>janiszt</p>
     	</div>
 
@@ -48,6 +48,10 @@
 					</section>
 
 					<section>
+						<img src="img/add_allegrogroup.png"/>
+					</section>
+
+					<section data-transition="slide-in fade-out">
 						<ul>
 							<li>xxx active users</li>
 							<li>xxx items</li>
@@ -56,33 +60,15 @@
 						</ul>
 					</section>
 
-					<section>
+					<section data-transition="fade-in slide-out">
 						<ul>
-							<li>xxx tasks</li>
-							<li>xxx applications</li>
+							<li>xxx services</li>
 						  <li>xxx agents</li>
 						  <li>2 Datacenters</li>
 						  <li>1 Framework (Marathon)</li>
 						</ul>
 					</section>
 			 </section>
-
-			 <section>
-			 <section>
-				 <blockquote class="twitter-tweet tw-align-center" data-conversation="none" data-lang="pl"><p lang="en" dir="ltr">
-					 <a href="https://twitter.com/leppie">@leppie</a>
-					 <a href="https://twitter.com/tk_riple">@tk_riple</a>
-					 NOOP optimization: the fastest code you can possibly write is no code at all.</p>&mdash; Jonathan C Dickinson (@jcdickinson)
-					 <a href="https://twitter.com/jcdickinson/status/659275350401286144">28 October 2015</a>
-				 </blockquote>
-			 </section>
-
-			 <section>
-				 <blockquote>
-					 NOOP optimization: the fastest operation you can possibly perform is no operation at all.
-				 </blockquote>
-			 </section>
-		 </section>
 
 			 <section>
 				 <section>
@@ -97,13 +83,73 @@
 					</blockquote>
 				 </section>
 
+				 <section>
+						We collect a lot of metrics in Marathon.
+						You can collect those metrics via the /metrics endpoint.
+						With those reporters you can transfer the data into either
+						Graphite or DataDog and see the values over time.
+					<div style="float:right;">— Release Notes: v0.13.0</div>
+				</section>
+
+				<section>
+						<ul style="list-style-type: none;">
+							<li><img class="plain" style="height: 100px" src="img/graphite-logo.png" /></li>
+							<li><img class="plain" style="height: 100px" src="img/DataDog_logo.svg" /></li>
+							<li><img class="plain" style="height: 100px" src="img/logo-statsd.svg" /></li>
+							<li><img class="plain" style="height: 100px" src="img/prometheus_logo.png" /></li>
+						</ul>
+				</section>
+
+				 <section>
+					 <pre><code data-trim contenteditable style="font-size: 18px;">
+						 --reporter_graphite=tcp://localhost:2003?prefix=marathon-test&interval=10
+					 </code></pre>
+				</section>
+
 				 <section data-background-image="img/flame_before.png" data-background-size="contain">
 				 </section>
+
+				 <section>
+					 <pre><code data-trim contenteditable style="font-size: 18px;">
+						 --reporter_graphite=tcp://localhost:2003?prefix=marathon-test&interval=55
+					 </code></pre>
+				</section>
 
 				 <section data-background-image="img/flame_after.png" data-background-size="contain">
 				 </section>
 
+				 <section data-background-image="img/flame_before_after.png" data-background-size="contain">
+				 </section>
+
+				 <section data-transition="slide-in fade-out">
+							 <img class="plain" src="img/metrics-hat.png" />
+				 </section>
+
+				 <section data-transition="fade-in slide-out">
+							 <img class="plain" src="img/kamon-logo.svg" />
+				 </section>
+
+				 <section>
+							 <img src="img/update_dropwizard.png" />
+				 </section>
+
 			 </section>
+
+			 <section>
+				 <section>
+					 <h1>Profiling</h1>
+				</section>
+
+				<section>
+					<ul>
+						<li><a href="https://github.com/jvm-profiling-tools/honest-profiler">The Honest Proflier</a></li>
+						<li><a herf="https://visualvm.github.io/">VisualVM</a></li>
+						<li><a herf="http://www.brendangregg.com/flamegraphs.html">Flamegraphs</a></li>
+					</ul>
+				</section>
+
+			</section>
+
 
 				<section>
 					<section>
@@ -115,14 +161,90 @@
 					</section>
 
 					<section>
+						<pre><code data-trim contenteditable style="font-size: 18px;">
+							-XX:+PrintTenuringDistribution
+							-XX:+PrintGC
+							-XX:+PrintGCDetails
+							-XX:+PrintGCTimeStamps
+							-XX:+PrintGCApplicationStoppedTime
+							-Xloggc:/var/log/marathon/gc.log
+							-XX:+UseGCLogFileRotation
+							-XX:NumberOfGCLogFiles=2
+							-XX:GCLogFileSize=50M
+						</code></pre>
+				 </section>
+
+				 <section>
+					 <pre><code data-trim contenteditable style="font-size: 18px;">
+						-XX:InitialHeapSize=4294967296
+						-XX:MaxHeapSize=6442450944
+						-XX:MetaspaceSize=104857600
+						-XX:+UseG1GC
+					 </code></pre>
+				</section>
+
+					<section>
 						<h1>Akka</h1>
 					</section>
+
+					<section>
+							Throughput defines the maximum number of messages to be
+							processed per actor before the thread jumps to the next actor.
+							Set to 1 for as fair as possible.
+					</section>
+
+					<section>
+						<pre><code data-trim contenteditable style="font-size: 18px;">
+							-Dakka.default-dispatcher.throughput=20
+						</code></pre>
+					</section>
+
+					<section>
+						<h1>Threads</h1>
+					</section>
+
+					<section>
+						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
+							// src/main/scala/mesosphere/marathon/Main.scala
+							setIfNotDefined("scala.concurrent.context.minThreads", "5")
+							setIfNotDefined("scala.concurrent.context.numThreads", "x2")
+							setIfNotDefined("scala.concurrent.context.maxThreads", "64")
+						</code></pre>
+					</section>
+
+					<section>
+						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
+							// src/main/scala/mesosphere/util/ThreadPoolContext.scala
+							private val numberOfThreads: Int = System
+											.getProperty("numberOfIoThreads", "100").toInt
+						</code></pre>
+					</section>
+
+					<section data-transition="slide-in fade-out">
+						<h1>64 + 100 = ????</h1>
+					</section>
+					<section data-transition="fade-in slide-out">
+						<h1>64 + 100 	&asymp; 2000</h1>
+					</section>
+
+					<section data-background-image="img/marathon_threads.png" data-background-size="contain">
+ 				 </section>
 
 				</section>
 
 				<section>
 					<section>
 						<h1>Zookeepr</h1>
+					</section>
+
+					<section>
+						<h3>Size</h3>
+					</section>
+
+					<section>
+						<pre><code data-trim contenteditable style="font-size: 18px;">
+							--zk_max_versions=3
+						</code></pre>
 					</section>
 
 					<section>
@@ -143,17 +265,43 @@ RESPONSE: [{
 }]
 						</code></pre>
 					</section>
-					
+
 					<section>
-						<h3>Size</h3>
+						<pre><code data-trim contenteditable style="font-size: 18px;">
+							--zk_max_node_size=2024000
+						</code></pre>
+					</section>
+					<section>
+						<pre><code style="python" data-trim contenteditable style="font-size: 18px;">
+							-Djute.maxbuffer=2024000
+						</code></pre>
+					</section>
+					<section>
+						<small>
+							jute.maxbuffer: This option can only be set as a Java system property.
+								There is no zookeeper prefix on it.
+								It specifies the maximum size of the data that can be stored in a znode.
+								The default is 0xfffff, or just under 1M.
+								<b>If this option is changed, the system property <u>must be set on all servers and clients</u> otherwise problems will arise.
+								This is really a sanity check. <u>ZooKeeper is designed to store data on the order of kilobytes in size.</u></b>
+							</small>
+					</section>
+
+					<section>
+						<blockquote>
+							ZooKeeper is designed to store data on the order of kilobytes in size.
+						</blockquote>
+					</section>
+
+					<section data-transition="slide-in fade-out">
+						<img src="img/marathon-7167.png" />
+					</section>
+					<section data-transition="fade-in slide-out">
+						<img src="img/marathon-7656.png" />
 					</section>
 
 					<section>
 						<h3>Writes</h3>
-					</section>
-
-					<section>
-						<h3>Load</h3>
 					</section>
 
 					<section>
@@ -163,10 +311,22 @@ RESPONSE: [{
 				</section>
 
 				<section>
-					<section>
-						<h1>Threads</h1>
-					</section>
-				</section>
+ 			 <section>
+ 				 <blockquote class="twitter-tweet tw-align-center" data-conversation="none" data-lang="pl"><p lang="en" dir="ltr">
+ 					 <a href="https://twitter.com/leppie">@leppie</a>
+ 					 <a href="https://twitter.com/tk_riple">@tk_riple</a>
+ 					 NOOP optimization: the fastest code you can possibly write is no code at all.</p>&mdash; Jonathan C Dickinson (@jcdickinson)
+ 					 <a href="https://twitter.com/jcdickinson/status/659275350401286144">28 October 2015</a>
+ 				 </blockquote>
+ 			 </section>
+
+ 			 <section>
+ 				 <blockquote>
+ 					 NOOP optimization: the fastest operation you can possibly perform is no operation at all.
+ 				 </blockquote>
+ 			 </section>
+ 		 </section>
+
 
 				<section>
 					<section>
@@ -174,20 +334,44 @@ RESPONSE: [{
 					</section>
 
 					<section>
-						<h1>Healthchecks</h1>
-					</section>
+						 <blockquote>
+							 <div>&ldquo;Marathon could handle only up to 3700 tasks
+								  with Marathon TCP health checks&rdquo;</div>
+							 <div style="float:right; font-size: small;">
+								— Introducing Mesos-native health checks in Apache Mesos – Part II, Gaston Kleiman, January 17, 2017
+							 </div>
+						</blockquote>
+				 </section>
+
+				 <section>
+					 <blockquote>
+						 <div>&ldquo;when using <b>Marathon HTTP checks</b>, we found out that
+							 Marathon <b>started to report health failures and return errors</b>
+							 to the API requests <b>when the cluster
+							 reached the 1900 tasks mark</b>&rdquo;</div>
+						<div style="float:right; font-size: small;">
+							— Introducing Mesos-native health checks in Apache Mesos – Part II, Gaston Kleiman, January 17, 2017
+						</div>
+					</blockquote>
+				 </section>
+
+
 				</section>
 
 				<section>
 					<section>
 						<h1>Events</h1>
 					</section>
-				</section>
-
-				<section>
 					<section>
-						<h1>Deployments</h1>
+						<h3>Callback</h3>
+						<ul>
+							<li>sends every event</li>
+							<li>some evets are big (≥ 10 MB)</li>
+							<li>deprecated</li>
+						</ul>
 					</section>
+					<section data-background-image="img/marathon-consul.png" data-background-size="contain" data-transition="slide-in fade-out"></section>
+					<section data-background-image="img/marathon-consul-sse.png" data-background-size="contain" data-transition="fade-in slide-out"></section>
 				</section>
 
 				<section>
@@ -196,14 +380,34 @@ RESPONSE: [{
 					</section>
 				</section>
 
+				<section>
+					<section>
+						<h1>Marathon 1.4+</h1>
+					</section>
 
+					<section>
+						<h1>Marathon 1.4+</h1>
+					</section>
 
+					<section data-background-image="img/marathon_perf_degradation.png" data-background-size="contain"></section>
+					<section>
+						<img src="img/marathon-7358.png" />
+ 					</section>
+
+					<section>
+						<blockquote class="twitter-tweet tw-align-center" data-lang="pl"><p lang="en" dir="ltr">
+							It was a &quot;soft&quot; release. It is the version of Marathon that is at the root of DC/OS 1.10 that was released.
+							Full announcement to follow.</p>&mdash; Ken Sipe (@kensipe)
+							<a href="https://twitter.com/kensipe/status/906504411555524611">9 września 2017</a></blockquote>
+					</section>
+
+				</section>
 
 				<section>
 					<ol>
 						<li>Shard your marathon</li>
 						<li>Monitor — enable metrics</li>
-						<li>Update to 1.3.12*</li>
+						<li>Update to 1.3.13*</li>
 						<li>Minimize Zookeeper latency</li>
 						<li>Tune JVM</li>
 						<li>Do not use the event bus</li>
