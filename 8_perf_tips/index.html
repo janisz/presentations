@@ -256,6 +256,9 @@ RESPONSE: [{
  					<section data-transition="fade-in slide-out">
  						<h1>64 + 100 	= O(	tasks)</h1>
  					</section>
+					<section>
+						Whenever blocking request is called by the actor new thread is spawned.
+				  </section>
 					<section data-background-image="img/marathon_threads.png" data-background-size="contain">
  				  </section>
 
@@ -334,12 +337,12 @@ RESPONSE: [{
 						<h1>#6: Use a custom executor</h1>
 					</section>
 					<section>
-						Use executor to handle operations perormed on task:
+						Use executor to handle task statte change:
 						<ul>
 							<li>staging</li>
 							<li>running</li>
 							<li>killing</li>
-							<li>health change</li>
+							<li>health </li>
 						</ul>
 					</section>
 				</section>
@@ -362,6 +365,7 @@ RESPONSE: [{
 
 
 				<section>
+					<h3>Summary</h3>
 					<ol>
 						<li>Monitor — enable metrics</li>
 						<li>Tune JVM</li>
