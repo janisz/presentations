@@ -50,20 +50,11 @@
 					<section>
 						<img src="img/add_allegrogroup.png"/>
 					</section>
-
-					<section>
-						<ul>
-							<li>521 services</li>
-						  <li>200 agents</li>
-						  <li>2 Datacenters</li>
-						  <li>1 Framework (Marathon)</li>
-						</ul>
-					</section>
 			 </section>
 
 			 <section>
 				 <section>
-					 <h1>Metrics</h1>
+					 <h1>#1: Enable Metrics</h1>
 				</section>
 
 				 <section>
@@ -101,9 +92,6 @@
 				 <section data-background-image="img/flame_after.png" data-background-size="contain">
 				 </section>
 
-				 <section data-background-image="img/flame_before_after.png" data-background-size="contain">
-				 </section>
-
 				 <section data-transition="slide-in fade-out">
 							 <img class="plain" src="img/metrics-hat.png" />
 				 </section>
@@ -118,25 +106,9 @@
 
 			 </section>
 
-			 <section>
-				 <section>
-					 <h1>Profiling</h1>
-				</section>
-
-				<section>
-					<ul>
-						<li><a href="https://github.com/jvm-profiling-tools/honest-profiler">The Honest Proflier</a></li>
-						<li><a herf="https://visualvm.github.io/">VisualVM</a></li>
-						<li><a herf="http://www.brendangregg.com/flamegraphs.html">Flamegraphs</a></li>
-					</ul>
-				</section>
-
-			</section>
-
-
 				<section>
 					<section>
-						<h1>JVM</h1>
+						<h1>#2: Tune JVM</h1>
 					</section>
 
 					<section>
@@ -157,15 +129,6 @@
 						</code></pre>
 				 </section>
 
-				 <section>
-					 <pre><code data-trim contenteditable style="font-size: 18px;">
-						-XX:InitialHeapSize=4294967296
-						-XX:MaxHeapSize=6442450944
-						-XX:MetaspaceSize=104857600
-						-XX:+UseG1GC
-					 </code></pre>
-				</section>
-
 					<section>
 						<h1>Akka</h1>
 					</section>
@@ -181,56 +144,15 @@
 							-Dakka.default-dispatcher.throughput=20
 						</code></pre>
 					</section>
-
-					<section>
-						<h1>Threads</h1>
-					</section>
-
-					<section>
-						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
-							// src/main/scala/mesosphere/marathon/Main.scala
-							setIfNotDefined("scala.concurrent.context.minThreads", "5")
-							setIfNotDefined("scala.concurrent.context.numThreads", "x2")
-							setIfNotDefined("scala.concurrent.context.maxThreads", "64")
-						</code></pre>
-					</section>
-
-					<section>
-						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
-							// src/main/scala/mesosphere/util/ThreadPoolContext.scala
-							private val numberOfThreads: Int = System
-											.getProperty("numberOfIoThreads", "100").toInt
-						</code></pre>
-					</section>
-
-					<section data-transition="slide-in fade-out">
-						<h1>64 + 100 = ????</h1>
-					</section>
-					<section data-transition="fade-in slide-out">
-						<h1>64 + 100 	&asymp; 2000</h1>
-					</section>
-					<section data-transition="fade-in slide-out">
-						<h1>64 + 100 	= O(	tasks)</h1>
-					</section>
-
-					<section data-background-image="img/marathon_threads.png" data-background-size="contain">
- 				 </section>
-
 				</section>
 
 				<section>
 					<section>
-						<h1>ZooKeeper</h1>
+						<h1>#3: Optimize ZooKeeper</h1>
 					</section>
 
 					<section>
 						<h3>Size</h3>
-					</section>
-
-					<section>
-						<pre><code data-trim contenteditable style="font-size: 18px;">
-							--zk_max_versions=3
-						</code></pre>
 					</section>
 
 					<section>
@@ -264,18 +186,15 @@ RESPONSE: [{
 					</section>
 					<section>
 						<small>
-							jute.maxbuffer: This option can only be set as a Java system property.
-								There is no zookeeper prefix on it.
-								It specifies the maximum size of the data that can be stored in a znode.
-								The default is 0xfffff, or just under 1M.
-								<b>If this option is changed, the system property <u>must be set on all servers and clients</u> otherwise problems will arise.
-								This is really a sanity check. <u>ZooKeeper is designed to store data on the order of kilobytes in size.</u></b>
+							jute.maxbuffer:
+								If this option is changed, the system property <u>must be set on all servers and clients</u> otherwise problems will arise.
+								This is really a sanity check. <u>ZooKeeper is designed to store data on the order of kilobytes in size.</u>
 							</small>
 					</section>
 
 					<section>
 						<blockquote>
-							ZooKeeper is designed to store data on the order of kilobytes in size.
+							ZooKeeper is designed to store [node] data on the order of kilobytes in size.
 						</blockquote>
 					</section>
 
@@ -297,34 +216,65 @@ RESPONSE: [{
 					</section>
 
 					<section>
-						<h3>Writes</h3>
-					</section>
-
-					<section>
 						<h3>Latency</h3>
 					</section>
 
 				</section>
 
 				<section>
- 			 <section>
- 				 <blockquote class="twitter-tweet tw-align-center" data-conversation="none" data-lang="pl"><p lang="en" dir="ltr">
- 					 <a href="https://twitter.com/leppie">@leppie</a>
- 					 <a href="https://twitter.com/tk_riple">@tk_riple</a>
- 					 NOOP optimization: the fastest code you can possibly write is no code at all.</p>&mdash; Jonathan C Dickinson (@jcdickinson)
- 					 <a href="https://twitter.com/jcdickinson/status/659275350401286144">28 October 2015</a>
- 				 </blockquote>
- 			 </section>
+					 <section>
+						 <h1>#4: Update to 1.3.13*</h1>
+					 </section>
 
- 			 <section>
- 				 <blockquote>
- 					 NOOP optimization: the fastest operation you can possibly perform is no operation at all.
- 				 </blockquote>
- 			 </section>
- 		 </section>
+					 <section>
+ 						<h2>Threads</h2>
+ 					</section>
+
+ 					<section>
+ 						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
+ 							// src/main/scala/mesosphere/marathon/Main.scala
+ 							setIfNotDefined("scala.concurrent.context.minThreads", "5")
+ 							setIfNotDefined("scala.concurrent.context.numThreads", "x2")
+ 							setIfNotDefined("scala.concurrent.context.maxThreads", "64")
+ 						</code></pre>
+ 					</section>
+
+ 					<section>
+ 						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
+ 							// src/main/scala/mesosphere/util/ThreadPoolContext.scala
+ 							private val numberOfThreads: Int = System
+ 											.getProperty("numberOfIoThreads", "100").toInt
+ 						</code></pre>
+ 					</section>
+
+ 					<section data-transition="slide-in fade-out">
+ 						<h1>64 + 100 = ????</h1>
+ 					</section>
+ 					<section data-transition="fade-in slide-out">
+ 						<h1>64 + 100 	&asymp; 2000</h1>
+ 					</section>
+ 					<section data-transition="fade-in slide-out">
+ 						<h1>64 + 100 	= O(	tasks)</h1>
+ 					</section>
+					<section data-background-image="img/marathon_threads.png" data-background-size="contain">
+ 				  </section>
 
 
-				<section>
+					<section>
+				 	 <blockquote class="twitter-tweet tw-align-center" data-conversation="none" data-lang="pl"><p lang="en" dir="ltr">
+				 		 <a href="https://twitter.com/leppie">@leppie</a>
+				 		 <a href="https://twitter.com/tk_riple">@tk_riple</a>
+				 		 NOOP optimization: the fastest code you can possibly write is no code at all.</p>&mdash; Jonathan C Dickinson (@jcdickinson)
+				 		 <a href="https://twitter.com/jcdickinson/status/659275350401286144">28 October 2015</a>
+				 	 </blockquote>
+				  </section>
+
+				  <section>
+				 	 <blockquote>
+				 		 NOOP optimization: the fastest operation you can possibly perform is no operation at all.
+				 	 </blockquote>
+				  </section>
+
 					<section>
 						<h1>Healthchecks</h1>
 					</section>
@@ -336,14 +286,14 @@ RESPONSE: [{
 					<section>
 						 <blockquote>
 							 <div>&ldquo;Marathon could handle only up to 3700 tasks
-								  with Marathon TCP health checks&rdquo;</div>
+									with Marathon TCP health checks&rdquo;</div>
 							 <div style="float:right; font-size: small;">
 								— Introducing Mesos-native health checks in Apache Mesos – Part II, Gaston Kleiman, January 17, 2017
 							 </div>
 						</blockquote>
-				 </section>
+					</section>
 
-				 <section>
+					<section>
 					 <blockquote>
 						 <div>&ldquo;when using <b>Marathon HTTP checks</b>, we found out that
 							 Marathon <b>started to report health failures and return errors</b>
@@ -353,14 +303,19 @@ RESPONSE: [{
 							— Introducing Mesos-native health checks in Apache Mesos – Part II, Gaston Kleiman, January 17, 2017
 						</div>
 					</blockquote>
+					</section>
+
+
+					 <section data-background-image="img/marathon_perf_degradation.png" data-background-size="contain"></section>
+					 <section>
+						 <img src="img/marathon-7358.png" />
+					 </section>
+
 				 </section>
-
-
-				</section>
 
 				<section>
 					<section>
-						<h1>Events</h1>
+						<h1>#5: Do not use the event bus</h1>
 					</section>
 					<section>
 						<h3>Callback</h3>
@@ -376,7 +331,22 @@ RESPONSE: [{
 
 				<section>
 					<section>
-						<h1>Plugins</h1>
+						<h1>#6: Use a custom executor</h1>
+					</section>
+					<section>
+						Use executor to handle operations perormed on task:
+						<ul>
+							<li>staging</li>
+							<li>running</li>
+							<li>killing</li>
+							<li>health change</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>#7: Prefer batch operations many individual ones</h1>
 					</section>
 					<section data-background-image="img/plugin_1.svg" data-background-size="contain" data-transition="slide-in fade-out"></section>
 					<section data-background-image="img/plugin_2.svg" data-background-size="contain" data-transition="fade-in slide-out"></section>
@@ -384,41 +354,23 @@ RESPONSE: [{
 
 				<section>
 					<section>
-						<h1>Sharding</h1>
+						<h1>#8: Shard your marathon</h1>
 					</section>
 					<section data-background-image="img/plugin_2.svg" data-background-size="contain" data-transition="slide-in fade-out"></section>
 					<section data-background-image="img/sharding.svg" data-background-size="contain" data-transition="fade-in slide-out"></section>
 				</section>
 
-				<section>
-					<section>
-						<h1>Marathon 1.4+</h1>
-					</section>
-
-					<section data-background-image="img/marathon_perf_degradation.png" data-background-size="contain"></section>
-					<section>
-						<img src="img/marathon-7358.png" />
- 					</section>
-
-					<section>
-						<blockquote class="twitter-tweet tw-align-center" data-lang="pl"><p lang="en" dir="ltr">
-							It was a &quot;soft&quot; release. It is the version of Marathon that is at the root of DC/OS 1.10 that was released.
-							Full announcement to follow.</p>&mdash; Ken Sipe (@kensipe)
-							<a href="https://twitter.com/kensipe/status/906504411555524611">9 września 2017</a></blockquote>
-					</section>
-
-				</section>
 
 				<section>
 					<ol>
-						<li>Shard your marathon</li>
 						<li>Monitor — enable metrics</li>
-						<li>Update to 1.3.13*</li>
-						<li>Minimize Zookeeper latency</li>
 						<li>Tune JVM</li>
+						<li>Optimize Zookeeper</li>
+						<li>Update to 1.3.13*</li>
 						<li>Do not use the event bus</li>
 						<li>Use a custom executor</li>
-						<li>Prefer batch deployments to many individual ones</li>
+						<li>Prefer batch deployments operations many individual ones</li>
+						<li>Shard your marathon</li>
 					<ol>
 				</section>
 
