@@ -37,10 +37,11 @@
 
 				<section>
 
-				<section data-background-image="img/dude.jpg" data-background-size="contain"></section>
+				<section data-background-image="img/first.png" data-background-size="contain"></section>
 
 				<section>
 					<img src="img/blog1.png"/>
+					<a href="https://allegro.tech/2017/07/golang-slices-gotcha.html">https://allegro.tech/2017/07/golang-slices-gotcha.html</a>
 				</section>
 
 				</section>
@@ -209,18 +210,56 @@
 					<blockquote cite="https://buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/">
 						tl;dr: A service mesh is a dedicated infrastructure layer for making
 						service-to-service communication safe, fast, and reliable.
+						<small>– https://buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/</small>
 					</blockquote>
 					</section>
 
 					<section>
 					<blockquote cite="https://buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/">
 						If you’re building a cloud native application, you need a service mesh!
+						<small>– https://buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/</small>
 					</blockquote>
 					</section>
 
 					<section data-background-image="img/linkerd.png" data-background-size="contain"></section>
 					<section data-background-image="img/istio.svg" data-background-size="contain"></section>
+					<section data-background-image="img/service_mesh.svg" data-background-size="contain"></section>
 
+					<section>
+						<h3>Sidecar</h3>
+						<ul>
+								<li>Service discovery</li>
+								<li>Health checking</li>
+								<li>Routing</li>
+								<li>Load balancing</li>
+								<li>AuthN/Z</li>
+								<li>Metrics/Tracing</li>
+						<ul>
+					</section>
+
+					<section>
+						<h3>Service Mesh Controller</h3>
+						<ul>
+								<li>Populate service discovery</li>
+								<li>Load balancing algorithms/heuristics</li>
+								<li>Reapeting/Timeouts/Circuit breaking</li>
+								<li>Deployments</li>
+						<ul>
+					</section>
+
+					<section>
+						<h3>Service</h3>
+						<ul>
+								<li>No load balancing</li>
+								<li>No circuit breaking/repeating policy</li>
+								<li>No tracing</li>
+						<ul>
+					</section>
+
+					<section>
+						<img src="img/mattklein.png"/>
+						<a href="http://bit.ly/2l4P1ZT">http://bit.ly/2l4P1ZT</a>
+					</section>
 
 				</section>
 
