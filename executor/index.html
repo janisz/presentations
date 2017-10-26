@@ -64,16 +64,95 @@
 				</section>
 
 				<section>
+					<h1>12 Factor Apps</h1>
+					a methodology for building software-as-a-service apps
+				</section>
+
+				<section>
+					<ol>
+						<li>Codebase — <div style="font-size: medium;display:inline; text-align:center">One codebase tracked in revision control, many deploys</div></li>
+						<li>Dependencies — <div style="font-size: medium;display:inline; text-align:center">Explicitly declare and isolate dependencies</div></li>
+						<li>Config — <div style="font-size: medium;display:inline; text-align:center">Store config in the environment</div></li>
+						<li>Backing services — <div style="font-size: medium;display:inline; text-align:center">Treat backing services as attached resources</div></li>
+						<li>Build, release, run — <div style="font-size: medium;display:inline; text-align:center">Strictly separate build and run stages</div></li>
+						<li>Processes — <div style="font-size: medium;display:inline; text-align:center">Execute the app as one or more stateless processes</div></li>
+						<li>Port binding — <div style="font-size: medium;display:inline; text-align:center">Export services via port binding</div></li>
+						<li>Concurrency — <div style="font-size: medium;display:inline; text-align:center">Scale out via the process model</div></li>
+						<li>Disposability — <div style="font-size: medium;display:inline; text-align:center">Maximize robustness with fast startup and graceful shutdown</div></li>
+						<li>Dev/prod parity — <div style="font-size: medium;display:inline; text-align:center">Keep development, staging, and production as similar as possible</div></li>
+						<li>Logs — <div style="font-size: medium;display:inline; text-align:center">Treat logs as event streams</div></li>
+						<li>Admin processes — <div style="font-size: medium;display:inline; text-align:center">Run admin/management tasks as one-off processes</div></li>
+					</ol>
+				</section>
+
+				<section>
+					<ul>
+						<li>Config</li>
+						<li>Disposability</li>
+						<li>Logs</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Config</h2>
+					<blockquote cite="https://12factor.net/config">
+						The twelve-factor app stores config in environment variables
+					</blockquote>
+				</section>
+
+				<section data-background-image="img/config.svg" data-background-size="contain"></section>
+
+				<section>
+					<h2>Disposability</h2>
+					<blockquote cite="https://12factor.net/disposability">
+						The twelve-factor app’s processes are disposable, meaning they can be started or stopped at a moment’s notice.
+					</blockquote>
+				</section>
+				<section>
+					<h2>Disposability</h2>
+					<blockquote cite="https://12factor.net/disposability">
+						Processes should strive to minimize startup time.
+					</blockquote>
+				</section>
+				<section>
+					<h2>Disposability</h2>
+					<blockquote cite="https://12factor.net/disposability">
+						Processes shut down gracefully when they receive a SIGTERM
+					</blockquote>
+				</section>
+				<section>
 					<h3>Application Lifecycle</h3>
 					<img src="img/lifecycle.svg"/>
 				</section>
-
 				<section>
 					<h3>Events delay</h3>
 					<img src="img/marathon-consul-sse.png"/>
 				</section>
-
 				<section data-background-image="img/task_status.svg" data-background-size="contain"></section>
+				<section data-background-image="img/MESOS-6933.png" data-background-size="contain"></section>
+				<section data-background-image="img/MESOS-6790.png" data-background-size="contain"></section>
+
+				<section>
+					<h2>Logs</h2>
+					<blockquote cite="https://12factor.net/logs">
+						A twelve-factor app never concerns itself with routing or storage of its output stream.
+						It should not attempt to write to or manage logfiles. Instead,
+						each running process writes its event stream, unbuffered, to stdout.
+					</blockquote>
+				</section>
+				<section>
+					<code>ContainerLogger</code>
+				</section>
+
+				<section>
+					<h3>Who is using a Custom Executor?</h3>
+					<ul>
+						<li>Aurora</li>
+						<li>Singularity</li>
+						<li>https://github.com/Devatoria/go-mesos-executor</li>
+					</ul>
+				</section>
+
 
 			</div>
 
