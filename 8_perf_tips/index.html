@@ -1,0 +1,411 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>MesosCon 2017 | 8 perfomance tips for Marathon</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+
+			<div class="footer" style="position: absolute; left: 0; bottom: 0; font-size: 25px; z-index: 30;">
+           <p><i class="fa fa-twitter" aria-hidden="true"></i>janiszt</p>
+    	</div>
+
+			<div class="slides">
+				<section>
+					<section data-background-image="img/intro_EU.png" data-background-size="contain">
+					</section>
+
+
+					<section data-background-image="img/allegro-logo.svg" data-background-size="contain">
+					</section>
+
+					<section>
+						<img src="img/add_allegrogroup.png"/>
+					</section>
+			 </section>
+
+			 <section>
+				 <section>
+					 <h1>#1: Enable Metrics</h1>
+				</section>
+
+				 <section>
+						We collect a lot of metrics in Marathon.
+						You can collect those metrics via the /metrics endpoint.
+						With those reporters you can transfer the data into either
+						Graphite or DataDog and see the values over time.
+					<div style="float:right;">— Release Notes: v0.13.0</div>
+				</section>
+
+				<section>
+						<ul style="list-style-type: none;">
+							<li><img class="plain" style="height: 100px" src="img/graphite-logo.png" /></li>
+							<li><img class="plain" style="height: 100px" src="img/DataDog_logo.svg" /></li>
+							<li><img class="plain" style="height: 100px" src="img/logo-statsd.svg" /></li>
+							<li><img class="plain" style="height: 100px" src="img/prometheus_logo.png" /></li>
+						</ul>
+				</section>
+
+				 <section>
+					 <pre><code data-trim contenteditable style="font-size: 18px;">
+						 --reporter_graphite=tcp://localhost:2003?prefix=marathon-test&interval=10
+					 </code></pre>
+				</section>
+
+				 <section data-background-image="img/flame_before.png" data-background-size="contain">
+				 </section>
+
+				 <section>
+					 <pre><code data-trim contenteditable style="font-size: 18px;">
+						 --reporter_graphite=tcp://localhost:2003?prefix=marathon-test&interval=55
+					 </code></pre>
+				</section>
+
+				 <section data-background-image="img/flame_after.png" data-background-size="contain">
+				 </section>
+
+				 <section data-transition="slide-in fade-out">
+							 <img class="plain" src="img/metrics-hat.png" />
+				 </section>
+
+				 <section data-transition="fade-in slide-out">
+							 <img class="plain" src="img/kamon-logo.svg" />
+				 </section>
+
+				 <section>
+							 <img src="img/update_dropwizard.png" />
+				 </section>
+
+			 </section>
+
+				<section>
+					<section>
+						<h1>#2: Tune JVM</h1>
+					</section>
+
+					<section>
+						<h1>GC</h1>
+					</section>
+
+					<section>
+						<pre><code data-trim contenteditable style="font-size: 18px;">
+							-XX:+PrintTenuringDistribution
+							-XX:+PrintGC
+							-XX:+PrintGCDetails
+							-XX:+PrintGCTimeStamps
+							-XX:+PrintGCApplicationStoppedTime
+							-Xloggc:/var/log/marathon/gc.log
+							-XX:+UseGCLogFileRotation
+							-XX:NumberOfGCLogFiles=2
+							-XX:GCLogFileSize=50M
+						</code></pre>
+				 </section>
+
+				 <section>
+					 <img src="img/censum.png" />
+				 </section>
+
+				 <section>
+				  <img src="img/gc.png" />
+				 </section>
+
+
+					<section>
+						<h1>Akka</h1>
+					</section>
+
+					<section>
+							Throughput defines the maximum number of messages to be
+							processed per actor before the thread jumps to the next actor.
+							Set to 1 for as fair as possible.
+					</section>
+
+					<section>
+						<pre><code data-trim contenteditable style="font-size: 18px;">
+							-Dakka.default-dispatcher.throughput=20
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>#3: Optimize ZooKeeper</h1>
+					</section>
+
+					<section>
+						<h3>Size</h3>
+					</section>
+
+					<section>
+						<pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
+422 - Failed to deploy app [/really/important/app] to [prod].
+Caused by: (http status: 422 from https://production).
+RESPONSE: [{
+  "message":"Object is not valid",
+  "details":[{
+    "path":"/",
+    "errors":[
+      "The way we persist data in ZooKeeper would exceed the maximum ZK node
+      size (1024000 bytes). You can adjust this value via --zk_max_node_size,
+      but make sure this value is compatible with your ZooKeeper ensemble!
+      See: http://zookeeper.apache.org/doc/r3.3.1/zookeeperAdmin.html#Unsafe+Options"
+    ]
+  }]
+}]
+						</code></pre>
+					</section>
+
+					<section>
+						<pre><code data-trim contenteditable style="font-size: 18px;">
+							--zk_max_node_size=2024000
+						</code></pre>
+					</section>
+					<section>
+						<pre><code style="python" data-trim contenteditable style="font-size: 18px;">
+							-Djute.maxbuffer=2024000
+						</code></pre>
+					</section>
+					<section>
+						<small>
+							jute.maxbuffer:
+								If this option is changed, the system property <u>must be set on all servers and clients</u> otherwise problems will arise.
+								This is really a sanity check. <u>ZooKeeper is designed to store data on the order of kilobytes in size.</u>
+							</small>
+					</section>
+
+					<section>
+						<blockquote>
+							ZooKeeper is designed to store data on the order of kilobytes in size [in a single node].
+						</blockquote>
+					</section>
+
+					<section>
+						<blockquote>
+							<div>&ldquo;In version 1.4, <b>Marathon stores a group only with
+								<u>references</u></b> in order to keep node size under 1 MB.&rdquo;</div>
+						 <div style="float:right; font-size: small;">
+							 — Introducing Marathon 1.4, Joerg Schad, March 29, 2017
+						 </div>
+					 </blockquote>
+					</section>
+
+					<section data-transition="slide-in fade-out">
+						<img src="img/marathon-7167.png" />
+					</section>
+					<section data-transition="fade-in slide-out">
+						<img src="img/marathon-7656.png" />
+					</section>
+
+					<section>
+						<h3>Latency</h3>
+					</section>
+
+				</section>
+
+				<section>
+					 <section>
+						 <h1>#4: Update to 1.3.13*</h1>
+					 </section>
+
+					 <section>
+ 						<h2>Threads</h2>
+ 					</section>
+
+ 					<section>
+ 						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
+ 							// src/main/scala/mesosphere/marathon/Main.scala
+ 							setIfNotDefined("scala.concurrent.context.minThreads", "5")
+ 							setIfNotDefined("scala.concurrent.context.numThreads", "x2")
+ 							setIfNotDefined("scala.concurrent.context.maxThreads", "64")
+ 						</code></pre>
+ 					</section>
+
+ 					<section>
+ 						<pre><code class="scala" data-trim contenteditable style="font-size: 18px;">
+ 							// src/main/scala/mesosphere/util/ThreadPoolContext.scala
+ 							private val numberOfThreads: Int = System
+ 											.getProperty("numberOfIoThreads", "100").toInt
+ 						</code></pre>
+ 					</section>
+
+ 					<section data-transition="slide-in fade-out">
+ 						<h1>64 + 100 = ????</h1>
+ 					</section>
+ 					<section data-transition="fade-in slide-out">
+ 						<h1>64 + 100 	&asymp; 2000</h1>
+ 					</section>
+ 					<section data-transition="fade-in slide-out">
+ 						<h1>64 + 100 	= O(	tasks)</h1>
+ 					</section>
+					<section>
+						Whenever blocking request is called by the actor new thread is spawned.
+				  </section>
+					<section data-background-image="img/marathon_threads.png" data-background-size="contain">
+ 				  </section>
+
+
+					<section>
+				 	 <blockquote class="twitter-tweet tw-align-center" data-conversation="none" data-lang="pl"><p lang="en" dir="ltr">
+				 		 <a href="https://twitter.com/leppie">@leppie</a>
+				 		 <a href="https://twitter.com/tk_riple">@tk_riple</a>
+				 		 NOOP optimization: the fastest code you can possibly write is no code at all.</p>&mdash; Jonathan C Dickinson (@jcdickinson)
+				 		 <a href="https://twitter.com/jcdickinson/status/659275350401286144">28 October 2015</a>
+				 	 </blockquote>
+				  </section>
+
+				  <section>
+				 	 <blockquote>
+				 		 NOOP optimization: the fastest operation you can possibly perform is no operation at all.
+				 	 </blockquote>
+				  </section>
+
+					<section>
+						<h1>Healthchecks</h1>
+					</section>
+
+					<section data-background-image="img/hc_1.svg" data-background-size="contain" data-transition="slide-in fade-out"></section>
+					<section data-background-image="img/hc_2.svg" data-background-size="contain" data-transition="slide-in fade-out"></section>
+					<section data-background-image="img/hc_3.svg" data-background-size="contain" data-transition="slide-in fade-out"></section>
+
+					<section>
+						 <blockquote>
+							 <div>&ldquo;Marathon could handle only up to 3700 tasks
+									with Marathon TCP health checks&rdquo;</div>
+							 <div style="float:right; font-size: small;">
+								— Introducing Mesos-native health checks in Apache Mesos – Part II, Gaston Kleiman, January 17, 2017
+							 </div>
+						</blockquote>
+					</section>
+
+					<section>
+					 <blockquote>
+						 <div>&ldquo;when using <b>Marathon HTTP checks</b>, we found out that
+							 Marathon <b>started to report health failures and return errors</b>
+							 to the API requests <b>when the cluster
+							 reached the 1900 tasks mark</b>&rdquo;</div>
+						<div style="float:right; font-size: small;">
+							— Introducing Mesos-native health checks in Apache Mesos – Part II, Gaston Kleiman, January 17, 2017
+						</div>
+					</blockquote>
+					</section>
+
+
+					 <section data-background-image="img/marathon_perf_degradation.png" data-background-size="contain"></section>
+					 <section>
+						 <img src="img/marathon-7358.png" />
+					 </section>
+
+				 </section>
+
+				<section>
+					<section>
+						<h1>#5: Do not use the event bus</h1>
+					</section>
+					<section>
+						<h3>Callback</h3>
+						<ul>
+							<li>sends every event</li>
+							<li>some evets are big (≥ 10 MB)</li>
+							<li>deprecated</li>
+						</ul>
+						<h3>SSE</h3>
+						<ul>
+							<li>support event filtering (1.3.7)</li>
+							<li>some evets are big (≥ 10 MB)</li>
+						</ul>
+					</section>
+					<section data-background-image="img/marathon-consul.png" data-background-size="contain" data-transition="slide-in fade-out"></section>
+					<section data-background-image="img/marathon-consul-sse.png" data-background-size="contain" data-transition="fade-in slide-out"></section>
+					<section>
+						<img src="img/big_event.png" />
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h1>#6: Use a custom executor</h1>
+					</section>
+					<section>
+						<h3>Task state change:<h3>
+						<ul>
+							<li>starting</li>
+							<li>running</li>
+							<li>killing</li>
+							<li>health </li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>#7: Prefer batching</h1>
+					</section>
+					<section data-background-image="img/plugin_1.svg" data-background-size="contain" data-transition="slide-in fade-out"></section>
+					<section data-background-image="img/plugin_2.svg" data-background-size="contain" data-transition="fade-in slide-out"></section>
+				</section>
+
+				<section>
+					<section>
+						<h1>#8: Shard your marathon</h1>
+					</section>
+					<section data-background-image="img/plugin_2.svg" data-background-size="contain" data-transition="slide-in fade-out"></section>
+					<section data-background-image="img/sharding.svg" data-background-size="contain" data-transition="fade-in slide-out"></section>
+				</section>
+
+
+				<section>
+					<h3>Summary</h3>
+					<ol>
+						<li>Monitor — enable metrics</li>
+						<li>Tune JVM</li>
+						<li>Optimize Zookeeper</li>
+						<li>Update to 1.3.13*</li>
+						<li>Do not use the event bus</li>
+						<li>Use a custom executor</li>
+						<li>Prefer batching</li>
+						<li>Shard your marathon</li>
+					<ol>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+		<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+	</body>
+</html>

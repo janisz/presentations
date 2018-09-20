@@ -1,0 +1,31 @@
+digraph G {
+rankdir=LR;
+
+STAGING [shape=circle, color="grey"];
+STARTING [shape=circle, style=dashed];
+RUNNING [shape=circle, style=dashed];
+KILLING [shape=circle, style=dashed];
+LOST [shape=circle, color="grey"];
+
+
+FINISHED [shape=doublecircle];
+FAILED [shape=doublecircle];
+KILLED [shape=doublecircle];
+ERROR [shape=doublecircle, color="grey"];
+DROPPED [shape=doublecircle, color="grey"];
+GONE [shape=doublecircle, color="grey"];
+
+STAGING -> STARTING;
+STARTING -> RUNNING;
+RUNNING -> KILLING;
+RUNNING -> RUNNING;
+KILLING -> FAILED;
+KILLING -> KILLED;
+STAGING -> ERROR;
+KILLING -> LOST;
+STAGING -> DROPPED;
+KILLING -> GONE;
+KILLING -> FINISHED;
+LOST -> RUNNING;
+
+}

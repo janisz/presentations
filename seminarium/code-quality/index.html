@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jakość Kodu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(//fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(//fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      ul li {
+        line-height: 1.5em;
+      }
+      .remark-slide-content {
+        font-size: 1.8em;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      a {
+        text-decoration: none;
+      }
+      .footnote {
+        font-size: 20px;
+        position: absolute;
+        bottom: 3em;
+        right: 3em;
+      }
+      .important {
+        color: red;
+        display: block;
+        font-size: 1.3em;
+        padding: 2em;
+        text-align: center;
+      }
+      .remark-slide-content.big-code {
+        background-color: black;
+      }
+      .big-code .remark-code-line {
+        font-size: 2.8em;
+      }
+      .watermark
+      {
+        position: absolute;
+        opacity: 0.5;
+        font-size: 11em;
+        z-index: 1000;
+		left: 0;
+		top: 20%;
+		right: 0;
+		bottom: 0;
+		text-align: center;
+		transform: 			rotate(25deg);
+		-moz-transform: 	rotate(25deg);
+		-webkit-transform: 	rotate(25deg);
+      }
+      .fail {
+        color: red;
+	  }
+      .topic {
+        text-align: center;
+        vertical-align: middle;
+      }
+      .img-50 img {
+        width: 50%;
+      }
+      .img-80 img {
+        height: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: topic
+
+# Wydobywanie informacji z repozytorium kodu
+
+.footnote[[Tomasz Janiszewski](https://github.com/janisz)]
+
+---
+
+# Co to jest repozytorium
+
+* historia zmian w kodu
+
+---
+
+# Jakie dane przechowuje repozytorium
+
+* kto
+* co
+* kiedy
+* gdzie
+* po co
+
+---
+
+```
+[de4844d] Jeff Heaton 2014-11-30 Merge pull request #186 from JayH5/neat-init
+[38b63be] Jeff Heaton 2014-11-30 Merge pull request #187 from JayH5/neat-weight-range
+[9d989b3] Jeff Heaton 2014-11-30 Merge pull request #193 from janisz/enable_build_on_java_8
+[214a790] Jeff Heaton 2014-11-30 Merge pull request #195 from andrewthomas28/master
+[f894920] thomascramera 2014-11-21 encog-java-core #194: NormalizationHelper is not serializable - Fix line endings
+1       1       src/main/java/org/encog/ml/data/versatile/columns/ColumnDefinition.java
+87      87      src/main/java/org/encog/ml/data/versatile/normalizers/IndexedNormalizer.java
+75      75      src/main/java/org/encog/ml/data/versatile/normalizers/Normalizer.java
+130     130     src/main/java/org/encog/ml/data/versatile/normalizers/OneOfNNormalizer.java
+74      74      src/main/java/org/encog/ml/data/versatile/normalizers/PassThroughNormalizer.java
+132     132     src/main/java/org/encog/ml/data/versatile/normalizers/RangeNormalizer.java
+140     140     src/main/java/org/encog/ml/data/versatile/normalizers/RangeOrdinal.java
+192     192     src/main/java/org/encog/ml/data/versatile/normalizers/strategies/BasicNormalizationStrategy.java
+80      80      src/main/java/org/encog/ml/data/versatile/normalizers/strategies/NormalizationStrategy.java
+83      83      src/test/java/org/encog/ml/data/versatile/TestNormalizationHelper.java
+
+[cc301f2] thomascramera 2014-11-21 encog-java-core #192: ColumnDefinition: default index should be -1 : Fix line ending
+359     359     src/main/java/org/encog/ml/data/versatile/columns/ColumnDefinition.java
+
+[f23f9b5] thomascramera 2014-11-20 encog-java-core #194: NormalizationHelper is not serializable https://github.com/encog/encog-java-core/issues/194
+24      1       src/main/java/org/encog/ml/data/versatile/columns/ColumnDefinition.java
+87      81      src/main/java/org/encog/ml/data/versatile/normalizers/IndexedNormalizer.java
+75      73      src/main/java/org/encog/ml/data/versatile/normalizers/Normalizer.java
+130     114     src/main/java/org/encog/ml/data/versatile/normalizers/OneOfNNormalizer.java
+74      68      src/main/java/org/encog/ml/data/versatile/normalizers/PassThroughNormalizer.java
+132     115     src/main/java/org/encog/ml/data/versatile/normalizers/RangeNormalizer.java
+140     124     src/main/java/org/encog/ml/data/versatile/normalizers/RangeOrdinal.java
+192     174     src/main/java/org/encog/ml/data/versatile/normalizers/strategies/BasicNormalizationStrategy.java
+80      78      src/main/java/org/encog/ml/data/versatile/normalizers/strategies/NormalizationStrategy.java
+83      0       src/test/java/org/encog/ml/data/versatile/TestNormalizationHelper.java
+
+[c415f6b] Tomasz Janiszewski 2014-11-13 Make gradlew runable
+0       0       gradlew
+
+```
+
+---
+
+# Co możemy odczytać z kodu
+
+* rozmiar
+* złożoność
+* ?
+
+---
+
+.img-50[![](http://2.bp.blogspot.com/-2j1S-KhHOdk/UCzLwJGJYzI/AAAAAAAAUqE/NT-HsdZqmqg/s1600/skyline.jpg)]
+.img-50[![](http://3.bp.blogspot.com/-bOn6rIlzr1g/UCzs0T2aVUI/AAAAAAAAUsE/0Se3umEfoWk/s1600/top.png)]
+---
+.img-50[![](http://2.bp.blogspot.com/-u5CG77aR3pg/UDISigNt1SI/AAAAAAAAUuQ/g9bACw4iFFE/s1600/tests.jpg)]
+.img-50[![](http://2.bp.blogspot.com/-2k45H9W30Pg/UCztAhhGQwI/AAAAAAAAUsM/G2f45pLWW_w/s1600/org_apache.png)]
+
+---
+
+# Co możemy wydobyć z repozytorium
+
+* hot spot
+* bus factor
+* powtarzalne czynności
+* ...
+
+---
+# Hot spot
+
+* miejsca najczęsciej zmieniane
+* niestabilne
+* prawdopodobnie logika biznesowa
+* albo miejsca wymagające specjalnej troski
+
+---
+# Bus factor
+
+> In software development, the bus factor is the number of key developers who would need to be incapacitated to make a project unable to proceed.
+
+---
+# Materiały
+- http://www.adamtornhill.com/code/codemaat.htm
+- https://pragprog.com/book/atcrime/code-as-a-crime-scene
+- https://www.youtube.com/watch?v=qJ_hplxTYJw
+- http://pawelwlodarski.blogspot.com/2013/06/jak-rodzi-sie-zozonosc-kodu-part-an.html
+- http://pl.wikipedia.org/wiki/Z%C5%82o%C5%BCono%C5%9B%C4%87_cyklomatyczna
+- http://blog.eisele.net/2012/08/glassfish-city-revisited.html
+- http://en.wikipedia.org/wiki/Bus_factor
+
+    </textarea>
+    <script src="//gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+          ratio: '16:9',
+          navigation: {
+            scroll: true,
+            touch: true,
+            click: false
+          },
+          highlightStyle: 'sunburst'
+        });
+    </script>
+  </body>
+</html>

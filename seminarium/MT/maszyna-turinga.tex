@@ -1,0 +1,182 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{subfig}
+
+\newtheorem{lemat}{Lemat}
+\newtheorem{tw}{Twierdzenie}
+\newtheorem{przyklad}{Przykład}
+\newtheorem{zad}{Zadanie}
+\theoremstyle{definition}
+\newtheorem{df}{Definicja}
+\newtheorem{alg}{Algorytm}
+\theoremstyle{remark}
+\newtheorem{uwaga}{}
+
+\title{Maszyna Turinga}
+\author{Tomasz Janiszewski}
+\date{}
+\institute{MiNI PW}
+\usetheme{Warsaw}
+
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+\section{Maszyna Turinga}
+
+\begin{frame}
+	\begin{df}[Maszyna Turinga - model podstawowy]~\\
+	Maszyną Turinga w modelu podstawowym nazywamy system
+	\begin{equation}
+	M = (Q, \Sigma, \Gamma, \delta, q_0, B, F)
+	\end{equation}
+	\begin{description}
+	\item[$Q$] -- skończony zbiór stanów
+	\item[$\Sigma$] -- zbiór symboli wejściowych
+	\item[$\Gamma$] -- skończony zbiór wszystkich symboli będący alfabetem taśmy
+	\item[$\delta$] -- funkcja przejścia $\delta = Q\times\Gamma \rightarrow Q\times\Gamma\times\{L,P\}$
+	\item[$q_0$] -- stan początkowy $q_0 \in Q$
+	\item[$B$] -- zdefiniowany symbol pusty $B\in\Gamma$
+	\item[$F$] -- zbiór stanów akceptujących $F\subset Q$
+	\end{description}
+	\end{df}	
+\end{frame}
+
+\begin{frame}
+	\begin{uwaga}
+		Obliczenie Maszyny Turinga polega na wykonaniu kolejnych ruchów określonych funkcją przejścia
+	\end{uwaga}
+\end{frame}
+
+\begin{frame}
+	\begin{uwaga}
+		Obliczenie może się zakończyć ale może też być kontynuowane w nieskończoność
+	\end{uwaga}
+\end{frame}
+
+\begin{frame}
+	\begin{df}[Relacja ruchu]
+		Obliczeniem Maszyny Turinga nazywamy ciąg opisów chwilowych pozostających w relacji okerślonej funkcją przejścia
+	\end{df}
+\end{frame}
+
+\begin{frame}
+\begin{df}[Maszyna Turinga z wartownikiem]~\\
+Maszyną Turinga z wartownikiem nazywamy system $M = (Q, \Sigma, \Gamma, \delta, q_0, B, F)$
+z tym że alfabet taśmy posiada specjalny symbol $\#$ nazywany wartownikiem, zapisany w pierwszej
+komórce taśmy.
+\end{df}
+\begin{uwaga}
+Ta maszyna jest równoważna Maszynie Turinga w modelu podstawowym
+\end{uwaga}
+\end{frame}
+
+\begin{frame}
+	\begin{df}[Maszyna Turinga ze stanem akceptującym]~\\
+	Maszyną Turinga z własnością stopu ze stanem akceptującym nazywamy system
+		\begin{equation}
+			M = (Q, \Sigma, \Gamma, \delta, q_0, B, F = \{ACC\})
+		\end{equation}
+	Przy czym istnieje założenie, że przejście do stanu akceptującego jest zakończeniem obliczeń
+	\end{df}
+\end{frame}
+
+\begin{frame}
+\begin{df}[Maszyna Turinga z własnością stopu]~\\
+Maszyną Turinga z własnością stopu nazywamy system
+\begin{equation}
+M = (Q, \Sigma, \Gamma, \delta, q_0, B, F = \{ACC\}, N = \{REJ\})
+\end{equation}
+gdzie $N$ to zbiór stanów odrzucających.
+\begin{itemize}
+\item Zakończenie obliczeń jest równoważne przejściu do stanu akceptującego lub odrzucającego
+\item Maszyna kończy każde swoje obliczenie
+\end{itemize}
+\end{df}
+\end{frame}
+
+\begin{frame}
+	\begin{uwaga}
+	Maszyna Turinga z własnością stopu nie akceptuje wszystkich języków akceptowanych przez 
+	Maszynę Turinga w modelu podstawowym, jest jej szczególnym przypadkiem
+	\end{uwaga}
+\end{frame}
+
+\begin{frame}
+\begin{df}[Maszyna Turinga z taśmą wielościeżkową]~\\
+Maszyną Turinga z taśmą wielościeżkową nazywamy system $M = (Q, \Sigma, \Gamma, \delta, q_0, B, F)$,
+gdzie funkcja przejścia zdefiniowana jest następująco
+\begin{equation}
+\delta : Q\times\Gamma^k\rightarrow G\times\Gamma\times\{L,P\}
+\end{equation}
+\end{df}
+\end{frame}
+
+\begin{frame}
+\begin{tw}
+Maszyna Turinga z taśmą wielościeżkową jest równoważna Maszynie Turinga w modelu podstawowym (jednościeżkowej)
+\end{tw}
+\begin{uwaga}
+Można ją zastąpić maszyną jednościeżkową kosztem zwiększenia alfabetu taśmy, który będzie
+iloczynem kartezjańskim alfabetów ścieżek.
+\end{uwaga}
+\end{frame}
+
+\begin{frame}
+\begin{tw}
+Maszyny Turinga z taśmą obustronnie nieograniczoną są równoważne Maszyną Turinga w modelu podstawowym
+\end{tw}
+\end{frame}
+
+\begin{frame}
+\begin{df}[Wielotaśmowa Maszyna Turinga]~\\
+k-taśmową Maszyną Turinga nazywamy system
+\begin{equation}
+M = (Q, \Sigma, \Gamma_1\times\dots\times\Gamma_k, \delta, q_0, B, F)
+\end{equation}
+gdzie funkcja przejścia zdefiniowana jest następująco
+\begin{equation}
+\delta: Q\times(\Gamma_1\times\dots\times\Gamma_k) \rightarrow Q\times(\Gamma_1\times\dots\Gamma_k)\times\{L,R,S\}^k
+\end{equation}
+\end{df}
+\end{frame}
+
+\begin{frame}
+\begin{tw}
+Klasa Maszyn Turinga wielotaśmowych jest równoważna klasie Maszyn Turinga w modelu podstawowym
+\end{tw}
+\begin{uwaga}
+Symulacja maszyny wielotaśmowej jednotaśmową skutkuje wzrostem złożoności obliczeniowej proporcjonalną do kwadratu liczby ruchów.
+\end{uwaga}
+\end{frame}
+
+\begin{frame}
+\begin{df}[Niedeterministyczna Maszyna Turinga]~\\
+Definicja jest analogiczna do Maszyny Turinga w modelu podstawowym z tym że funkcja przejścia
+zdefiniowana jest następująco
+\begin{equation}
+\delta: Q\times\Gamma \rightarrow \bigcup^\infty_{k=0} (Q\times\Gamma\times\{L,R\})^k\quad
+\footnote{Dla $k=0$ wartość jest nieokreślona}
+\end{equation}
+Zatem ruch tej maszyny polega na niedeterministycznym wyborze jednej z wartości funkcji przejścia,
+a następnie wykonaniu ruchu takiego jaki wykonałaby deterministyczna maszyna.
+\end{df}
+\end{frame}
+
+\begin{frame}
+\begin{uwaga}
+Obliczenie niedeterministycznej Maszyny Turinga jest drzewem w którym
+\begin{itemize}
+\item wierzchołki etykietowane są opisem chwilowym maszyny
+\item potomkami dowolnego wierzchołka są wierzchołki pozostające z nim w relacji ruchu
+\end{itemize}
+\end{uwaga}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,108 @@
+
+Debugging Adventure
+Slices strike back 
+19:00 25 Sep 2018
+Tags: go, slices, bug
+
+Tomasz Janiszewski
+Software Engineer, Mesosphere
+janiszt@gmail.com
+@janiszt
+
+
+* On Tuesday evening...
+
+.image dude.jpg
+
+* Have you tried deploy it again
+
+.image itcrowd.jpg
+
+* Debugging is like being the detective in a crime movie where you are also the murderer
+
+– Filipe Fortes (@fortes), November 10, 2013
+
+* Crime Scene
+
+- Marathon https://mesosphere.github.io/marathon/
+- Consul https://www.consul.io/
+- Marathon-Consul https://github.com/allegro/marathon-consul
+- A Service
+
+* What happen
+
+- application has 2 ports
+- each port has tags
+- both ports were registerd with same tags
+
+* At that time
+- 80% of our applications have only one port
+- 8% of our ports have tags
+- 1 (witout percent) has multiple tagged ports.
+
+* The bug is here
+
+.code snippet.go HLxxx
+
+* Distilled version
+
+.play a.go /START OMIT/,/END OMIT/
+
+* Slices
+
+.image slices.jpg
+
+* How slices works
+
+.image slice_1.svg
+
+* Append
+
+The append built-in function appends elements to the end of a slice. If it *has* *sufficient* *capacity*, the destination is *resliced* to accommodate the new elements. If it does *not*, a *new* underlying *array* will be *allocated*. Append *returns* *the* *updated* *slice.* It is therefore necessary to store the result of append, often in the variable holding the slice itself"
+
+
+* Step by step
+
+    x := []int{}
+    x = append(x, 0)
+    x = append(x, 1)
+
+.image 1.svg
+
+* Step by step
+
+    x = append(x, 2)
+
+.image 2.svg
+
+* Step by step
+
+    y := append(x, 3)
+
+.image 3.svg
+
+* Step by step
+
+    z := append(x, 4)
+
+.image 4.svg
+
+* Talk is cheep...
+
+.play a.1.go /START OMIT/,/END OMIT/
+
+* ...show me the code
+
+.play a.2.go /START OMIT/,/END OMIT/
+
+* Step by step
+
+.image 5.svg
+
+* Remarks
+
+- Be careful when using `append`.
+- Don’t `append` to slices you want to keep unchanged.
+- If you want to work on a copy of a slice data, you must explicitly copy it into a new slice.
+
+.image matrix.jpg

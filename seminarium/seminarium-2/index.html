@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jakość Kodu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(//fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(//fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      ul li {
+        line-height: 1.5em;
+      }
+      .remark-slide-content {
+        font-size: 1.8em;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      a {
+        text-decoration: none;
+      }
+      .footnote {
+        font-size: 20px;
+        position: absolute;
+        bottom: 3em;
+        right: 3em;
+      }
+      .important {
+        color: red;
+        display: block;
+        font-size: 1.3em;
+        padding: 2em;
+        text-align: center;
+      }
+      .remark-slide-content.big-code {
+        background-color: black;
+      }
+      .big-code .remark-code-line {
+        font-size: 2.8em;
+      }
+      .watermark
+      {
+        position: absolute;
+        opacity: 0.5;
+        font-size: 11em;
+        z-index: 1000;
+		left: 0;
+		top: 20%;
+		right: 0;
+		bottom: 0;
+		text-align: center;
+		transform: 			rotate(25deg);
+		-moz-transform: 	rotate(25deg);
+		-webkit-transform: 	rotate(25deg);
+      }
+      .fail {
+        color: red;
+	  }
+      .topic {
+        text-align: center;
+        vertical-align: middle;
+      }
+      .img-50 img {
+        width: 50%;
+      }
+      .img-80 img {
+        height: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: topic
+
+# Calculating bus factor from VCS log
+
+.footnote[Author: [Tomasz Janiszewski](https://github.com/janisz) <br/> Supervisor: [Marcin Luckner, Ph. D.](http://www.mini.pw.edu.pl/~lucknerm/)]
+
+---
+
+# Tools
+
+* Code-mat
+* graph-tool
+* Jupyter
+
+---
+
+# Methods
+
+* Connected components and bridge finding
+* Hierarchical Stochastic Blockmodel Inference
+* Stochastic Blockmodel Inference
+* PageRank
+
+---
+
+# Factors
+
+* time
+* change size
+
+---
+
+# Data
+
+* github
+    </textarea>
+    <script src="//gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+          ratio: '16:9',
+          navigation: {
+            scroll: true,
+            touch: true,
+            click: false
+          },
+          highlightStyle: 'sunburst'
+        });
+    </script>
+  </body>
+</html>
