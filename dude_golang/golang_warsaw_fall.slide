@@ -14,13 +14,13 @@ janiszt@gmail.com
 
 .image dude.jpg
 
-* Have you tried deploy it again
+* Have you tried deploying it again
 
 .image itcrowd.jpg
 
-* Debugging is like being the detective in a crime movie where you are also the murderer
+* Debugging
 
-– Filipe Fortes (@fortes), November 10, 2013
+.html debug.html
 
 * Crime Scene
 
@@ -33,12 +33,16 @@ janiszt@gmail.com
 
 - application has 2 ports
 - each port has tags
-- both ports were registerd with same tags
+- both ports were registered with same tags
+
+* What was changed
+
+a common tag (shared between two ports) was added
 
 * At that time
 - 80% of our applications have only one port
 - 8% of our ports have tags
-- 1 (witout percent) has multiple tagged ports.
+- 1 (without percent) has multiple tagged ports.
 
 * The bug is here
 

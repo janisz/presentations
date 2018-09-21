@@ -1,4 +1,4 @@
-commonTags := labelsToTags(app.Labels)
+commonTags := labelsToTags(app.Labels) // HLxxx
 var intents []RegistrationIntent
 for _, d := range definitions {
         intents = append(intents, RegistrationIntent{
@@ -9,7 +9,7 @@ for _, d := range definitions {
 }
 
 func labelsToTags(labels map[string]string) []string {
-	tags := []string{}
+	tags := []string{} // HLxxx
 	for key, value := range labels {
 		if value == "tag" {
 			tags = append(tags, key)
