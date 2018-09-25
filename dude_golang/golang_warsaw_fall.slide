@@ -9,20 +9,34 @@ Software Engineer, Mesosphere
 janiszt@gmail.com
 @janiszt
 
+: Hello, I'm Tomek and today I'll tell you about a bug that hits me almost two years ago when I was working at Allegro. 
 
 * On Tuesday evening...
+
+: On Tuesday late afternoon that quickly changed to evening one of my colleges came to my desk and told me he has a problem with deployment.
+: At that time I was in a team responsible for all deployments in the company.
 
 .image dude.jpg
 
 * Have you tried deploying it again
 
+: As usual, when a user has a problem I asked him to try one more time. We had hundreds of deployments every day and everything was good. 
+: It turns out he already tired and currently his service is unavailable.
+
 .image itcrowd.jpg
 
 * Debugging
 
+: This was red alert and with my other college, we started debugging. 
+
 .image debug.png _ 1000
 
 * Crime Scene
+
+: We have 4 suspects on the crime scene. 
+: A Service that was deployed
+: Marathon – the service orchestrator taking care of deployment
+: Consul – discovery system and Marathon-Consul the tools that register services deployed with Marathon in Consul.
 
 - Marathon https://mesosphere.github.io/marathon/
 - Consul https://www.consul.io/
@@ -31,41 +45,65 @@ janiszt@gmail.com
 
 * What happen
 
+: The service has exposed two ports with different tags.
+: Actually, they have 4 tags: 3 common and 1 different. In Consul they appeared with the same tags causing service to be hidden from the public.
+
 - application has 2 ports
 - each port has tags
 - both ports were registered with same tags
 
 * What was changed
 
+: This service was successfully deployed in the morning. It turns out a common tag were added to ports. 
+
 a common tag (shared between two ports) was added
 
 * At that time
+
+: At that time 80% of our applications exposed single port. 8% of exposed ports were tagged... and only one service has multiple tagged ports.
+
 - 80% of our applications have only one port
 - 8% of our ports have tags
 - 1 (without percent) has multiple tagged ports.
 
 * The bug is here
 
+: Here is the buggy code. The highlighted are victims. As you can see we created a slice of strings and append elements to it. 
+: Then we add port specific tags to common tags and store slice in a structure
+
 .code snippet.go HLxxx
 
 * Distilled version
+
+: Let's simplify the code. After unrolling loops it looks like this. We create a slice and append entries to it. 
+: What is the output of this code? a() works as we thought but b return same slice. Why?
 
 .play a.go /START OMIT/,/END OMIT/
 
 * Slices
 
+: Because that's how slices work
+
 .image slices.jpg
 
 * How slices works
+
+: Slice is a structure of 3 elements, a pointer to the underlying array, it's capacity and used length. In this example, length is 3 and capacity is 4.
 
 .image slice_1.svg
 
 * Append
 
+: When we append to a slice. If elements can fit in slice capacity then they are just put there and the length is increased. 
+: If they could not fit then a new array is allocated. Let's see what happen in our example.
+
 The append built-in function appends elements to the end of a slice. If it *has* *sufficient* *capacity*, the destination is *resliced* to accommodate the new elements. If it does *not*, a *new* underlying *array* will be *allocated*. Append *returns* *the* *updated* *slice.* It is therefore necessary to store the result of append, often in the variable holding the slice itself"
 
 
 * Step by step
+
+: We created a slice with no entries. This means it has 0 capacity and length and there is no allocated memory. 
+: We append 0 and 1 so the slice grows to contain elements.
 
     x := []int{}
     x = append(x, 0)
@@ -75,11 +113,17 @@ The append built-in function appends elements to the end of a slice. If it *has*
 
 * Step by step
 
+: Then we added the third element. Slice double its size. 
+: This means it has capacity 4 but a length of only 3.
+
     x = append(x, 2)
 
 .image 2.svg
 
 * Step by step
+
+: After appending the fourth element we increased length but use the same array. 
+: This means we have 2 slices using the same array but has the different length.
 
     y := append(x, 3)
 
@@ -87,11 +131,16 @@ The append built-in function appends elements to the end of a slice. If it *has*
 
 * Step by step
 
+: When we add another element to x it will overwrite previously stored element. 
+
     z := append(x, 4)
 
 .image 4.svg
 
 * Talk is cheep...
+
+: Now we can see this in a code. This time it will print the pointer, length and capacity of each slice.
+: As you can see all the slices has the same memory pointer.
 
 .play a.1.go /START OMIT/,/END OMIT/
 
@@ -101,9 +150,14 @@ The append built-in function appends elements to the end of a slice. If it *has*
 
 * Step by step
 
+: It does not happen when slice needs to grow. New arrays will be allocated.
+
 .image 5.svg
 
 * Remarks
+
+: In the end, I want to warn you that slices although they look like containers from other languages (e.g., Vectors from C++ or  Java) behave differently. 
+: This could be error prone for people used to immutable structures. 
 
 - Be careful when using `append`.
 - Don’t `append` to slices you want to keep unchanged.
