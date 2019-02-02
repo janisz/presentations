@@ -1,7 +1,7 @@
 
 Debugging Adventure
 Slices strike back 
-19:00 25 Sep 2018
+18:03 2 Feb 2019
 Tags: go, slices, bug
 
 Tomasz Janiszewski
@@ -164,3 +164,4 @@ The append built-in function appends elements to the end of a slice. If it *has*
 - If you want to work on a copy of a slice data, you must explicitly copy it into a new slice.
 
 .image matrix.jpg
+
