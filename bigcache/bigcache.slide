@@ -1,0 +1,70 @@
+
+BigCache after 4 years
+every milisecond counts
+18:03 2 Feb 2019
+Tags: go, slices, bug
+
+Tomasz Janiszewski
+Software Engineer, D2iQ
+janiszt@gmail.com
+@janiszt
+
+: Hello, I'm Tomasz and today I'll tell you about a project that I'm involved for last 4 years.
+: Nevertheless, I'm not working in the company that started this project.
+: Everything is possible due to open source.
+
+* What is BigCache?
+
+- fast concurent hashmap
+- minimal GC footprint
+- super simple – not LRU
+
+  func (c *BigCache) Get(key string) ([]byte, error)
+
+  func (c *BigCache) Set(key string, entry []byte) error
+
+* Why?
+
+- Initially: to store request metadata for short period
+- Now: for fun :)
+
+* Why?
+
+.image why.png
+
+
+* When?
+
+  $ git show `git rev-list --max-parents=0 HEAD`
+  commit 7a649d1ced34a6fec7904cba51f7db300f14e498
+  Author: Adam Dubiel <adamdubiel@users.noreply.github.com>
+  Date:   Wed Mar 23 08:18:52 2016 +0100
+      Initial commit
+
+
+* How?
+
+- shards – improve concurrency
+- bytes queue – reduce GC
+
+* Does it perform well?
+
+.image cache_write_workload.svg
+.caption https://blog.dgraph.io/post/caching-in-go/
+
+* Does it perform well?
+
+.image cache_read_workload.svg
+.caption https://blog.dgraph.io/post/caching-in-go/
+
+* Does it perform well?
+
+.image cache_mixed_workload.svg
+.caption https://blog.dgraph.io/post/caching-in-go/
+
+
+* Does it perform well?
+
+YES*
+
+*** Do your own benchmarks!
