@@ -42,11 +42,6 @@ janiszt@gmail.com
       Initial commit
 
 
-* How?
-
-- shards – improve concurrency
-- bytes queue – reduce GC
-
 * Does it perform well?
 
 .image cache_write_workload.svg
@@ -68,3 +63,57 @@ janiszt@gmail.com
 YES*
 
 *** Do your own benchmarks!
+
+* How?
+
+- RWMutex
+- Shards – improve concurrency
+- Bytes queue – reduce GC
+- No `defer`
+- Bitwise operation instead of modulo
+- Buffer
+- no alloc
+- A little copying
+- Zero dependenc
+
+* RWMutex
+* Shards – improve concurrency
+* Bytes queue – reduce GC
+
+* Never defer
+
+.image defer.png
+
+* Bitwise operation instead of modulo
+
+    x % (2 << n) == x & (2 << n - 1)
+
+* No alloc...
+
+  func bytesToString(b []byte) string {
+  	bytesHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+  	strHeader := reflect.StringHeader{Data: bytesHeader.Data, Len: bytesHeader.Len}
+  	return *(*string)(unsafe.Pointer(&strHeader))
+  }
+
+.link https://github.com/allegro/bigcache/pull/24
+
+* ... but
+
+  go-app-builder: Failed parsing input: parser: bad import "unsafe"
+                in github.com/allegro/bigcache/bigcache.go from GOPATH
+
+-  Clear is better than clever.
+-  Reflection is never clear.
+
+.link https://go-proverbs.github.io/
+
+* A little copying
+
+Copy FNV hash code to reduce allocation
+
+.link https://github.com/allegro/bigcache/pull/19
+
+* Zero dependency
+
+.html pike.html
