@@ -67,26 +67,84 @@ YES*
 * How?
 
 - RWMutex
-- Shards – improve concurrency
-- Bytes queue – reduce GC
+- Shards
+- Bytes queue
 - No `defer`
-- Bitwise operation instead of modulo
+- Bitwise modulo
 - Buffer
 - no alloc
 - A little copying
-- Zero dependenc
+- Zero dependency
+
+* Start with single map with Mutex
 
 * RWMutex
+
+  type RWMutex struct {
+  	w           Mutex  // held if there are pending writers
+  	writerSem   uint32 // semaphore for writers to wait for completing readers
+  	readerSem   uint32 // semaphore for readers to wait for completing writers
+  	readerCount int32  // number of pending readers
+  	readerWait  int32  // number of departing readers
+  }
+
+- concurrent reads are nearly blocking free
+- writes wait for all reads and other writes
+
+  // Wait for active readers.
+  if r != 0 && atomic.AddInt32(&rw.readerWait, r) != 0 {
+    runtime_SemacquireMutex(&rw.writerSem, false, 0)
+  }
+
 * Shards – improve concurrency
-* Bytes queue – reduce GC
 
-* Never defer
-
-.image defer.png
+- aka map of maps (implemented with array)
+- split single map into smaller maps
+- hash(key)%len(shards)
 
 * Bitwise operation instead of modulo
 
-    x % (2 << n) == x & (2 << n - 1)
+  // x % (2 << n) == x & (2 << n - 1)
+  func (c *BigCache) getShard(hashedKey uint64) (shard *cacheShard) {
+  	return c.shards[hashedKey&c.shardMask]
+  }
+
+.link https://github.com/allegro/bigcache/pull/5
+
+* Bitwise operation instead of modulo
+
+.code x_test.go
+
+* .
+.background modulo.png
+
+
+* Bytes queue – reduce GC
+
+.image large_map.png
+
+.link https://github.com/golang/go/issues/9477
+
+.html gc_map.html
+
+* .
+.background maps.png
+
+* Bytes queue – reduce GC
+
+- shard is map[int]int (map[hash(key)]index)
+- array of maps ([]map[int]int) instead of map of maps (map[int]map[int]int)
+- values are stored in huge array (queue)
+
+* Bytes queue – reduce GC
+
+
+* Never defer...
+
+
+* ..but
+
+.image defer.png
 
 * No alloc...
 
