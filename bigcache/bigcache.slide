@@ -141,6 +141,8 @@ YES*
 
 * Never defer...
 
+.image remove_defer.png _ 600
+.link https://github.com/allegro/bigcache/pull/37
 
 * ..but
 
