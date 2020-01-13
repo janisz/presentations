@@ -148,6 +148,10 @@ YES*
 
 .image defer.png
 
+* .
+
+.background defer.jpeg
+
 * No alloc...
 
   func bytesToString(b []byte) string {
