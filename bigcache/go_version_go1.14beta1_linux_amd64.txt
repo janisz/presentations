@@ -1,6 +1,0 @@
-goos: linux
-goarch: amd64
-BenchmarkNotDefered-8   	1000000000	         1.33 ns/op	       0 B/op	       0 allocs/op
-BenchmarkDefered-8      	1000000000	         2.36 ns/op	       0 B/op	       0 allocs/op
-PASS
-ok  	command-line-arguments	4.065s

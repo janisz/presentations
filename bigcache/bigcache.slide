@@ -1,6 +1,6 @@
 
-BigCache after 4 years
-every milisecond counts
+BigCache
+after 4 years
 18:03 2 Feb 2019
 Tags: go, slices, bug
 
@@ -78,6 +78,27 @@ YES*
 
 * Start with single map with Mutex
 
+  type BigCache struct {
+  	cache       map[string][]byte
+  	mutex       sync.Mutex
+  }
+
+  func (c *BigCache) Get(key string) ([]byte, error) {
+    mutex.Lock()
+    defer mutex.Unlock()
+    v, ok := c.cache[key]
+    if !ok {
+      return nil, fmt.Errorf("NOT FOUND")
+    }
+    return v, nil
+  }
+
+  func (c *BigCache) Set(key string, entry []byte) {
+    mutex.Lock()
+    defer mutex.Unlock()
+    c.cache[key] = entry
+  }
+
 * RWMutex
 
   type RWMutex struct {
@@ -96,7 +117,61 @@ YES*
     runtime_SemacquireMutex(&rw.writerSem, false, 0)
   }
 
+* Start with single map with RWMutex
+
+  type BigCache struct {
+    cache       map[string][]byte
+    mutex       sync.Mutex
+  }
+
+  func (c *BigCache) Get(key string) ([]byte, error) {
+    mutex.RLock()
+    defer mutex.RUnlock()
+    v, ok := c.cache[key]
+    if !ok {
+      return nil, fmt.Errorf("NOT FOUND")
+    }
+    return v, nil
+  }
+
+  func (c *BigCache) Set(key string, entry []byte) {
+    mutex.Lock()
+    defer mutex.Unlock()
+    c.cache[key] = entry
+  }
+
+
 * Shards – improve concurrency
+
+    type BigCache struct {
+      cache       map[string]shard
+      Hasher      Hasher
+    }
+
+    type shard struct {
+      mutex       sync.RWMutex
+      cache       map[string][]byte
+    }
+
+    // Hasher is responsible for generating unsigned, 64 bit hash of provided string.
+    // Hasher should minimize collisions (generating same hash for different strings)
+    // and while performance is also important fast functions are preferable
+    // (i.e. you can use FarmHash family).
+    type Hasher interface {
+    	Sum64(string) uint64
+    }
+
+* Shards – improve concurrency
+
+    type BigCache struct {
+      cache       []shard
+      Hasher      Hasher
+    }
+
+    type shard struct {
+      mutex       sync.RWMutex
+      cache       map[int][]byte
+    }
 
 - aka map of maps (implemented with array)
 - split single map into smaller maps
@@ -132,12 +207,22 @@ YES*
 
 * Bytes queue – reduce GC
 
+  type shard struct {
+    mutex       sync.RWMutex
+    cache       map[int]int
+    queue       BytesQueue
+  }
+
+  // BytesQueue is a non-thread safe queue type of fifo based on bytes array.
+  // For every push operation index of entry is returned. It can be used to read the entry later
+  type BytesQueue struct { ...  }
+
 - shard is map[int]int (map[hash(key)]index)
 - array of maps ([]map[int]int) instead of map of maps (map[int]map[int]int)
 - values are stored in huge array (queue)
 
-* Bytes queue – reduce GC
-
+* .
+.background bigcache.jpg
 
 * Never defer...
 
