@@ -84,8 +84,8 @@ YES*
   }
 
   func (c *BigCache) Get(key string) ([]byte, error) {
-    mutex.Lock()
-    defer mutex.Unlock()
+    c.mutex.Lock()
+    defer c.mutex.Unlock()
     v, ok := c.cache[key]
     if !ok {
       return nil, fmt.Errorf("NOT FOUND")
@@ -94,8 +94,8 @@ YES*
   }
 
   func (c *BigCache) Set(key string, entry []byte) {
-    mutex.Lock()
-    defer mutex.Unlock()
+    c.mutex.Lock()
+    defer c.mutex.Unlock()
     c.cache[key] = entry
   }
 
@@ -170,7 +170,7 @@ YES*
 
     type shard struct {
       mutex       sync.RWMutex
-      cache       map[int][]byte
+      cache       map[string][]byte
     }
 
 - aka map of maps (implemented with array)
