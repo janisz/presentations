@@ -1,7 +1,7 @@
 
 BigCache
 after 4 years
-18:03 2 Feb 2019
+09:00 23 Jan 2020
 Tags: go, slices, bug
 
 Tomasz Janiszewski
@@ -121,7 +121,7 @@ YES*
 
   type BigCache struct {
     cache       map[string][]byte
-    mutex       sync.Mutex
+    mutex       sync.RWMutex
   }
 
   func (c *BigCache) Get(key string) ([]byte, error) {
@@ -200,7 +200,7 @@ YES*
 
 .link https://github.com/golang/go/issues/9477
 
-.html gc_map.html
+.image jimmy.png _ 1000
 
 * .
 .background maps.png
@@ -265,4 +265,4 @@ Copy FNV hash code to reduce allocation
 
 * Zero dependency
 
-.html pike.html
+.image pike.png _ 1000
