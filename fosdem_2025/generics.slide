@@ -1,0 +1,87 @@
+
+A nil story
+18:00 1 Feb 2025
+Tags: go, slices, bug
+
+Tomasz Janiszewski
+Software Engineer, RedHat
+tomek@redhat.com
+@janiszt
+
+* Disclaimer:
+
+This talk is inspired by true events and real individuals.
+While the characters, settings, and certain events are based on actual experiences,
+the narrative has been fictionalized for dramatic purposes.
+Some names and identifying details have been changed or omitted to protect the privacy of individuals involved.
+Any resemblance to actual persons, living or dead, or actual events is coincidental.
+
+.image pr.png _ 800
+
+* What is nil?
+
+- typed empty pointer
+
+* `nil` check
+
+    if x == nil
+
+* `nil` check on an interface
+
+    type I interface {
+        A()
+    }
+
+    type impl struct{}
+
+    func (i *impl) A() {}
+
+    func isNil(i I) bool {
+        return i == nil
+    }
+
+* How we can define a var?
+
+	a := &impl{}
+	var b I
+	c := (*impl)(nil)
+
+
+* Let's check
+
+.play nil.go /START OMIT/,/END OMIT/ HL12
+
+* Why?
+
+* Solution
+
+    func isNil(i I) bool {
+        return i == nil ||
+            (reflect.ValueOf(i).Kind() == reflect.Ptr
+            && reflect.ValueOf(i).IsNil())
+    }
+
+* But
+
+Clear is better than clever.
+Reflection is never clear.
+
+* Clear
+
+    func isNil[T any, PT *T](i PT) bool {
+        var empty PT
+        return i == empty
+    }
+
+* But
+
+It does not compile explicitly unimplemented nil interface
+
+    var i I
+    i := I(nil)
+
+ PT (type I) does not satisfy *T
+
+* Go programmer claims he doesn’t need generics
+
+.image me.png 500 _
